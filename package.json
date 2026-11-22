@@ -3,13 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3001",   
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
+    "@portabletext/react": "^8.0.1",
+    "@sanity/image-url": "^2.2.0",
     "next": "16.4.6",
+    "next-sanity": "^13.5.1",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
