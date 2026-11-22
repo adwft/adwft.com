@@ -1,11 +1,18 @@
+import './globals.css'
+import {unstable_cache} from 'next/cache'
 import {client} from '@/lib/sanity'
 import {Header} from '@/components/Header'
 
-export const instant = false
 export const metadata = {title: 'adwft'}
 
+const getSettings = unstable_cache(
+  async () => client.fetch(`*[_type == "siteSettings"][0]`),
+  ['siteSettings'],
+  {revalidate: 3600}
+)
+
 export default async function RootLayout({children}: {children: React.ReactNode}) {
-  const settings = await client.fetch(`*[_type == "siteSettings"][0]`)
+  const settings = await getSettings()
   return (
     <html lang="en">
       <body className="antialiased bg-white">

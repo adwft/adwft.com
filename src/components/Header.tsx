@@ -9,8 +9,17 @@ export function Header({logo}: {logo: any}) {
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [results, setResults] = useState<any[]>([])
+  const [scrolled, setScrolled] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const router = useRouter()
+
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 50)
+    }
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   useEffect(() => {
     function onClick(e: MouseEvent) {
@@ -32,18 +41,21 @@ export function Header({logo}: {logo: any}) {
   }
 
   return (
-    <header className="border-b sticky top-0 bg-white z-50">
+    <header className="sticky top-0 bg-white/30 backdrop-blur-sm z-50">
       <div className="w-full flex justify-center relative" ref={ref}>
-        <button onClick={() => setOpen(!open)} className="cursor-pointer my-4">
+        <button
+          onClick={() => setOpen(!open)}
+          className={`cursor-pointer transition-all duration-300 ${scrolled ? 'mt-2 mb-2' : 'mt-8 mb-4'}`}
+        >
           {logo ? (
-            <img src={urlFor(logo).url()} alt="Logo" className="h-10" />
+            <img src={urlFor(logo).url()} alt="Logo" className="w-[92px] h-[28px]" />
           ) : (
             <span className="text-lg font-semibold">Logo</span>
           )}
         </button>
 
         {open && (
-          <nav className="absolute top-full left-1/2 -translate-x-1/2 bg-white border rounded shadow-lg w-64 p-4">
+          <nav className="absolute top-full left-1/2 -translate-x-1/2 bg-white border border-[#0032FF] rounded shadow-lg w-64 p-4">
             <input
               type="search"
               placeholder="Search posts…"

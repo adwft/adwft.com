@@ -23,7 +23,9 @@ export default async function PostPage({params}: {params: Promise<{slug: string}
         {new Date(post.publishedAt).toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})}
       </p>
       {post.image && <img src={client.config().projectId ? '' : ''} alt="" />}
-      <PortableText value={post.body} />
+      <div className="font-['Baskervville',serif] text-[#0032FF] text-[80px] leading-[85px] tracking-[0.01em] line-clamp-7">
+  <PortableText value={post.body} />
+</div>   
     </main>
   )
 }   
