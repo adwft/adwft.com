@@ -1,16 +1,19 @@
-export const instant = false   
-
+import {unstable_cache} from 'next/cache'
 import {client} from '@/lib/sanity'
 import {PortableText} from '@portabletext/react'
 import {notFound} from 'next/navigation'
 
-export const revalidate = 60 
-
 const query = `*[_type == "post" && slug.current == $slug][0]`
+
+const getPost = unstable_cache(
+  async (slug: string) => client.fetch(query, {slug}),
+  ['post', 'slug'],
+  {revalidate: 60}
+)
 
 export default async function PostPage({params}: {params: Promise<{slug: string}>}) {
   const {slug} = await params
-  const post = await client.fetch(query, {slug})
+  const post = await getPost(slug)
   if (!post) notFound()
 
   return (
