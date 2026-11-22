@@ -3,6 +3,8 @@ import {client} from '@/lib/sanity'
 import {PortableText} from '@portabletext/react'
 import {notFound} from 'next/navigation'
 
+export const instant = false   
+
 const query = `*[_type == "post" && slug.current == $slug][0]`
 
 const getPost = unstable_cache(
