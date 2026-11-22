@@ -1,4 +1,5 @@
 import {urlFor} from '@/lib/sanity'
+import {PortableText} from '@portabletext/react'
 import Link from 'next/link'
 
 function formatDate(iso: string) {
@@ -6,8 +7,6 @@ function formatDate(iso: string) {
 }
 
 export function PostCard({post}: {post: any}) {
-  const excerpt = post.excerpt || (post.body?.[0]?.children?.[0]?.text || '').slice(0, 150)
-
   return (
     <article className="border-b pb-6">
       {post.image && (
@@ -22,7 +21,9 @@ export function PostCard({post}: {post: any}) {
         <Link href={`/posts/${post.slug.current}`}>{post.title}</Link>
       </h2>
       <p className="text-sm text-gray-500">{formatDate(post.publishedAt)}</p>
-      <p className="text-gray-700 line-clamp-3 mt-2">{excerpt}</p>
+      <div className="font-['Baskervville',serif] font-medium text-[80px] leading-[85px] tracking-[0.01em] line-clamp-7 text-[#0032FF] mt-2">
+        <PortableText value={post.body} />
+      </div>
     </article>
   )
 }   
