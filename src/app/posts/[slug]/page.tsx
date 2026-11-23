@@ -1,9 +1,9 @@
 import {unstable_cache} from 'next/cache'
-import {client} from '@/lib/sanity'
+import {client, urlFor} from '@/lib/sanity'
 import {PortableText} from '@portabletext/react'
 import {notFound} from 'next/navigation'
 
-export const instant = false   
+export const instant = false
 
 const query = `*[_type == "post" && slug.current == $slug][0]`
 
@@ -24,7 +24,7 @@ export default async function PostPage({params}: {params: Promise<{slug: string}
       <p className="text-sm text-gray-500 mb-6">
         {new Date(post.publishedAt).toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})}
       </p>
-      {post.image && <img src={client.config().projectId ? '' : ''} alt="" />}
+      {post.image && <img src={urlFor(post.image).url()} alt="" className="w-full h-auto rounded mb-3" />}
       <div className="font-['Baskervville',serif] font-medium text-[80px] leading-[85px] tracking-[0.01em] text-[#0032FF]">
         <PortableText value={post.body} />
       </div>
