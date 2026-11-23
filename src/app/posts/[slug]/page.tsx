@@ -19,13 +19,13 @@ export default async function PostPage({params}: {params: Promise<{slug: string}
   if (!post) notFound()
 
   return (
-    <main className="max-w-2xl mx-auto p-6">
+    <main className="max-w-2xl mx-auto p-6 overflow-x-hidden">
       <h1 className="text-3xl font-bold mb-2">{post.title}</h1>
       <p className="text-sm text-gray-500 mb-6">
         {new Date(post.publishedAt).toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})}
       </p>
-      {post.image && <img src={urlFor(post.image).url()} alt="" className="w-full h-auto rounded mb-3" />}
-      <div className="font-['Baskervville',serif] font-medium text-[80px] leading-[85px] tracking-[0.01em] text-[#0032FF]">
+      {post.image && <img src={urlFor(post.image).url()} alt="" className="w-full h-auto rounded mb-3 max-w-full" />}
+      <div className="font-['Baskervville',serif] font-medium text-[32px] sm:text-[48px] md:text-[80px] leading-[36px] sm:leading-[52px] md:leading-[85px] tracking-[0.01em] text-[#0032FF] break-words">
         <PortableText value={post.body} />
       </div>
     </main>

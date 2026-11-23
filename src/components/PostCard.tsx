@@ -22,7 +22,7 @@ export function PostCard({post}: {post: any}) {
           <img
             src={urlFor(post.image).url()}
             alt={post.title}
-            className="w-full h-auto rounded mb-8"
+            className="w-full h-auto rounded mb-8 max-w-full"
           />
         </Link>
       )}
@@ -31,7 +31,7 @@ export function PostCard({post}: {post: any}) {
         {post.category && <span>{post.category.toUpperCase()}</span>}
       </div>
       <div
-        className="font-['Baskervville',serif] font-medium text-[70px] leading-[75px] tracking-[0.01em] line-clamp-7 text-[#0032FF] mt-8 cursor-pointer"
+        className="font-['Baskervville',serif] font-medium text-[32px] sm:text-[48px] md:text-[70px] leading-[36px] sm:leading-[52px] md:leading-[75px] tracking-[0.01em] line-clamp-7 text-[#0032FF] mt-8 cursor-pointer break-words"
         onClick={() => router.push(`/posts/${post.slug.current}`)}
       >
         <PortableText value={post.body} />
