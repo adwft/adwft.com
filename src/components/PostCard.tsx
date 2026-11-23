@@ -1,27 +1,39 @@
+'use client'
+
 import {urlFor} from '@/lib/sanity'
 import {PortableText} from '@portabletext/react'
 import Link from 'next/link'
+import {useRouter} from 'next/navigation'
 
 function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})
+  const d = new Date(iso)
+  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC']
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${months[d.getMonth()]} ${day}, ${d.getFullYear()}`
 }
 
 export function PostCard({post}: {post: any}) {
+  const router = useRouter()
+
   return (
-    <article className="border-b pb-6">
+    <article className="border-b pb-14">
       {post.image && (
-        <img
-          src={urlFor(post.image).url()}
-          alt={post.title}
-          className="w-full h-auto rounded mb-3"
-        />
+        <Link href={`/posts/${post.slug.current}`}>
+          <img
+            src={urlFor(post.image).url()}
+            alt={post.title}
+            className="w-full h-auto rounded mb-8"
+          />
+        </Link>
       )}
-      {post.category && <span className="text-sm text-gray-500">{post.category}</span>}
-      <h2 className="text-xl font-semibold mt-1">
-        <Link href={`/posts/${post.slug.current}`}>{post.title}</Link>
-      </h2>
-      <p className="text-sm text-gray-500">{formatDate(post.publishedAt)}</p>
-      <div className="font-['Baskervville',serif] font-medium text-[80px] leading-[85px] tracking-[0.01em] line-clamp-7 text-[#0032FF] mt-2">
+      <div className="flex items-center gap-4 font-['PT_Sans',sans-serif] text-[15px] tracking-[0.1em] text-[#0032FF]">
+        <span>{formatDate(post.publishedAt)}</span>
+        {post.category && <span>{post.category.toUpperCase()}</span>}
+      </div>
+      <div
+        className="font-['Baskervville',serif] font-medium text-[70px] leading-[75px] tracking-[0.01em] line-clamp-7 text-[#0032FF] mt-8 cursor-pointer"
+        onClick={() => router.push(`/posts/${post.slug.current}`)}
+      >
         <PortableText value={post.body} />
       </div>
     </article>

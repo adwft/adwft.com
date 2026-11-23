@@ -10,6 +10,7 @@ export function Header({logo}: {logo: any}) {
   const [search, setSearch] = useState('')
   const [results, setResults] = useState<any[]>([])
   const [scrolled, setScrolled] = useState(false)
+  const [hovered, setHovered] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
@@ -45,10 +46,16 @@ export function Header({logo}: {logo: any}) {
       <div className="w-full flex justify-center relative" ref={ref}>
         <button
           onClick={() => setOpen(!open)}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
           className={`cursor-pointer transition-all duration-300 ${scrolled ? 'mt-2 mb-2' : 'mt-8 mb-4'}`}
         >
           {logo ? (
-            <img src={urlFor(logo).url()} alt="Logo" className="w-[92px] h-[28px]" />
+            <img
+              src={hovered || open ? '/Union.svg' : urlFor(logo).url()}
+              alt="Logo"
+              className="w-[92px] h-[28px]"
+            />
           ) : (
             <span className="text-lg font-semibold">Logo</span>
           )}

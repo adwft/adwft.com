@@ -1,14 +1,13 @@
-export const instant = false     
+export const instant = false
 
 import {client} from '@/lib/sanity'
 import Link from 'next/link'
 
-const query = `*[_type == "post" && defined(publishedAt)] | order(publishedAt desc) {title, slug, publishedAt}`
+const query = `*[_type == "post" && defined(publishedAt)] | order(publishedAt desc) {_id, title, slug, publishedAt}`
 
 export default async function Memories() {
-  const posts = await client.fetch<{_id: string, title: string, slug: {current: string}, publishedAt: string}[]>(query)      
+  const posts = await client.fetch<{_id: string, title: string, slug: {current: string}, publishedAt: string}[]>(query)
 
-  // Group by "Month Year"
   const groups: Record<string, typeof posts> = {}
   for (const p of posts) {
     const key = new Date(p.publishedAt).toLocaleDateString('en-US', {month: 'long', year: 'numeric'})
