@@ -141,7 +141,7 @@ export function Header({ logo }: { logo: any }) {
 
             {!isSearching && (
               <>
-                <Link href="/" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Adobe</Link>
+                <Link href="/" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Abode</Link>
                 <Link href="/memories" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Database</Link>
                 <Link href="/about" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">What is this?</Link>
                 <Link href="/find" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Find me</Link>
