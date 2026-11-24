@@ -59,13 +59,16 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         value={post.body}
         components={{
           types: {
-            image: ({ value }: { value: any }) => (
-              <img
-                src={urlFor(value.asset).url()}
-                alt={value.alt || ''}
-                className="w-full h-auto rounded my-8"
-              />
-            ),
+            image: ({ value }: { value: any }) => {
+              if (!value?.asset) return null
+              return (
+                <img
+                  src={urlFor(value.asset).url()}
+                  alt={value.alt || ''}
+                  className="w-full h-auto rounded my-8"
+                />
+              )
+            },
             audio: ({ value }: { value: any }) => {
               if (!value?.asset?._id) return null
               const id = value.asset._id
