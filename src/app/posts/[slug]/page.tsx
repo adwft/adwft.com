@@ -67,15 +67,15 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
               />
             ),
             audio: ({ value }: { value: any }) => {
-              const ref = value.asset._ref
-              const [, id, ext] = ref.split('-')
-              const fileUrl = `https://cdn.sanity.io/files/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${id}.${ext}`
+              const id = value.asset._id
+              const [, assetId, ext] = id.split('-')
+              const fileUrl = `https://cdn.sanity.io/files/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${assetId}.${ext}`
               return <audio src={fileUrl} controls className="w-full my-8" />
             },
             video: ({ value }: { value: any }) => {
-              const ref = value.asset._ref
-              const [, id, ext] = ref.split('-')
-              const fileUrl = `https://cdn.sanity.io/files/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${id}.${ext}`
+              const id = value.asset._id
+              const [, assetId, ext] = id.split('-')
+              const fileUrl = `https://cdn.sanity.io/files/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${assetId}.${ext}`
               return <video src={fileUrl} controls className="w-full rounded my-8" />
             },
             soundcloud: ({ value }: { value: any }) => (
