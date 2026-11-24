@@ -16,7 +16,7 @@ export default async function Memories() {
 
   return (
     <main className="max-w-2xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-8">Memories</h1>
+      <h1 className="text-3xl font-bold mb-8">Database</h1>
       {Object.entries(groups).map(([month, items]) => (
         <section key={month} className="mb-6">
           <h2 className="text-lg font-semibold text-gray-500">{month}</h2>

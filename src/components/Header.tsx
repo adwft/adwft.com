@@ -115,10 +115,11 @@ export function Header({logo}: {logo: any}) {
                 {r.title}
               </button>
             ))}
-            <Link href="/" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Home</Link>
-            <Link href="/memories" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Memories</Link>
-            <Link href="/about" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">About</Link>
-            <Link href="/contact" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Contact</Link>
+            <Link href="/" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Adobe</Link>
+            <Link href="/memories" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Database</Link>
+            <Link href="/about" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">What</Link>
+            <Link href="/contact" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Find</Link>
+            <Link href="/contact" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Talk</Link>
           </nav>
         )}
       </div>
