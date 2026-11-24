@@ -96,21 +96,23 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         }}
       />
 
-      <nav className="flex justify-between items-center mt-16 pt-8 border-t">
+      <nav className="flex justify-between items-center gap-8 mt-16 pt-8 border-t">
         {post.prev ? (
           <Link
             href={`/posts/${post.prev.slug}`}
-            className="font-['PT_Sans',sans-serif] text-[15px] tracking-[0.1em] text-[#0032FF] hover:underline"
+            className="flex items-center gap-2 font-['PT_Sans',sans-serif] text-[15px] tracking-[0.1em] text-[#0032FF] hover:underline max-w-[45%]"
           >
-            ← {post.prev.title}
+            <span>←</span>
+            <span className="truncate">{post.prev.title}</span>
           </Link>
         ) : <span />}
         {post.next ? (
           <Link
             href={`/posts/${post.next.slug}`}
-            className="font-['PT_Sans',sans-serif] text-[15px] tracking-[0.1em] text-[#0032FF] hover:underline"
+            className="flex items-center gap-2 font-['PT_Sans',sans-serif] text-[15px] tracking-[0.1em] text-[#0032FF] hover:underline max-w-[45%]"
           >
-            {post.next.title} →
+            <span className="truncate">{post.next.title}</span>
+            <span>→</span>
           </Link>
         ) : <span />}
       </nav>
