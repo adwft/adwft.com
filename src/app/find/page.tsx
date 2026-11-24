@@ -7,7 +7,8 @@ export default async function Find() {
     ...,
     "findLinks": findLinks[]{
       ...,
-      "asset": image->
+      "asset": image->,
+      "hoverAsset": hoverImage->
     }
   }`)
 
@@ -31,11 +32,20 @@ export default async function Find() {
               rel="noopener noreferrer"
               className="group"
             >
-              <img
-                src={urlFor(link.asset).url()}
-                alt={link.label}
-                className="w-full h-auto rounded mb-2"
-              />
+              <div className="relative w-full aspect-[4/3] rounded overflow-hidden">
+                <img
+                  src={urlFor(link.asset).url()}
+                  alt={link.label}
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-0"
+                />
+                {link.hoverAsset && (
+                  <img
+                    src={urlFor(link.hoverAsset).url()}
+                    alt=""
+                    className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  />
+                )}
+              </div>
               <span className="font-['PT_Sans',sans-serif] text-[15px] tracking-[0.1em] text-[#0032FF] group-hover:underline">
                 {link.label}
               </span>
