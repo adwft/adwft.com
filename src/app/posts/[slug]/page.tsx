@@ -12,7 +12,7 @@ const query = `*[_type == "post" && slug.current == $slug][0]{
     ...,
     _type == "image" => {
       ...,
-      "asset": image.asset->
+      "asset": asset->
     },
     _type == "audio" => {
       ...,
