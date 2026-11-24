@@ -1,9 +1,9 @@
 'use client'
 
-import {useState, useEffect, useRef} from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import {useRouter} from 'next/navigation'
-import {client, urlFor} from '@/lib/sanity'
+import { useRouter } from 'next/navigation'
+import { urlFor } from '@/lib/sanity'
 
 const SENTENCES = [
   "almighty demigods whilt from tippance",
@@ -32,7 +32,7 @@ function generateSentence(): string {
   return SENTENCES[Math.floor(Math.random() * SENTENCES.length)]
 }
 
-export function Header({logo}: {logo: any}) {
+export function Header({ logo }: { logo: any }) {
   const [open, setOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [results, setResults] = useState<any[]>([])
@@ -41,6 +41,9 @@ export function Header({logo}: {logo: any}) {
   const [sentence, setSentence] = useState('')
   const ref = useRef<HTMLDivElement>(null)
   const router = useRouter()
+
+  const isSearching = search.length >= 2
+  const fontSize = Math.min(20, Math.floor(850 / sentence.length))
 
   useEffect(() => {
     function onScroll() {
@@ -52,7 +55,11 @@ export function Header({logo}: {logo: any}) {
 
   useEffect(() => {
     function onClick(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false)
+        setSearch('')
+        setResults([])
+      }
     }
     document.addEventListener('mousedown', onClick)
     return () => document.removeEventListener('mousedown', onClick)
@@ -60,19 +67,26 @@ export function Header({logo}: {logo: any}) {
 
   function toggleMenu() {
     const next = !open
+    if (next) {
+      setSearch('')
+      setResults([])
+      setSentence(generateSentence())
+    }
     setOpen(next)
-    if (next) setSentence(generateSentence())
+  }
+
+  function closeSearch() {
+    setSearch('')
+    setResults([])
   }
 
   async function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     const q = e.target.value
     setSearch(q)
     if (q.length < 2) { setResults([]); return }
-    const res = await client.fetch(
-      `*[_type == "post" && (title match $q or category match $q)] | order(publishedAt desc)[0..5] {title, slug}`,
-      {q: `*${q}*`}
-    )
-    setResults(res)
+    const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`)
+    const data = await res.json()
+    setResults(data)
   }
 
   return (
@@ -89,7 +103,7 @@ export function Header({logo}: {logo: any}) {
               src={hovered || open ? '/Union.svg' : urlFor(logo).url()}
               alt="Logo"
               className="object-contain"
-              style={hovered || open ? {width: '91.42px', height: '51.84px'} : {width: '92px', height: '28px'}}
+              style={hovered || open ? { width: '91.42px', height: '51.84px' } : { width: '92px', height: '28px' }}
             />
           ) : (
             <span className="text-lg font-semibold">Logo</span>
@@ -97,29 +111,61 @@ export function Header({logo}: {logo: any}) {
         </button>
 
         {open && (
-          <nav className="absolute top-full left-1/2 -translate-x-1/2 bg-white border border-[#0032FF] rounded-none shadow-lg w-72 p-4 max-h-[70vh] overflow-y-auto">
-            <p className="font-['Courier_New',monospace] text-[20px] tracking-[0.02em] text-[#000000] mb-3 text-center leading-snug">{sentence}</p>   
-            <input
-              type="search"
-              placeholder="Search posts…"
-              value={search}
-              onChange={handleSearch}
-              className="w-full border-none rounded-none bg-[#00A6FF]/10 px-3 py-2 text-sm mb-3"
-            />
-            {results.map((r) => (
-              <button
-                key={r._id}
-                onClick={() => { router.push(`/posts/${r.slug.current}`); setOpen(false) }}
-                className="block w-full text-left text-sm hover:underline py-1"
-              >
-                {r.title}
-              </button>
-            ))}
-            <Link href="/" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Adobe</Link>
-            <Link href="/memories" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Database</Link>
-            <Link href="/about" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">What</Link>
-            <Link href="/contact" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Find</Link>
-            <Link href="/contact" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Talk</Link>
+          <nav className={`absolute top-full left-1/2 -translate-x-1/2 rounded-none shadow-lg w-72 h-[380px] p-4 transition-colors duration-300 ${isSearching ? 'bg-[#0032FF]' : 'bg-white border border-[#0032FF]'}`}>
+            <p
+              className={`font-['Courier_New',monospace] tracking-[0.02em] mb-3 text-center leading-snug h-[56px] overflow-hidden ${isSearching ? 'text-white' : 'text-[#000000]'}`}
+              style={{ fontSize: `${fontSize}px` }}
+            >
+              {sentence}
+            </p>
+
+            <div className="flex items-center justify-between mb-3">
+              <input
+                type="search"
+                placeholder={isSearching ? 'Search…' : 'Search posts…'}
+                value={search}
+                onChange={handleSearch}
+                autoFocus={isSearching}
+                className={`flex-1 border-none rounded-none px-3 py-2 text-sm ${isSearching ? 'bg-white/20 text-white placeholder-white/60' : 'bg-[#00A6FF]/10 text-black'}`}
+              />
+              {isSearching && (
+                <button
+                  onClick={closeSearch}
+                  className="ml-3 text-white text-lg font-bold cursor-pointer hover:opacity-70"
+                  aria-label="Close search"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+
+            {!isSearching && (
+              <>
+                <Link href="/" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Adobe</Link>
+                <Link href="/memories" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Database</Link>
+                <Link href="/about" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">What is this?</Link>
+                <Link href="/find" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Find me</Link>
+                <Link href="/contact" onClick={() => setOpen(false)} className="block py-2 font-['PT_Sans',sans-serif] text-[20px] tracking-[0.1em] text-[#0032FF] hover:underline">Tell me</Link>
+              </>
+            )}
+
+            {isSearching && (
+              <div className="overflow-y-auto max-h-[220px]">
+                {results.length === 0 ? (
+                  <p className="text-white/70 text-sm py-2">No results</p>
+                ) : (
+                  results.map((r) => (
+                    <button
+                      key={r._id}
+                      onClick={() => { router.push(`/posts/${r.slug.current}`); setOpen(false); closeSearch() }}
+                      className="block w-full text-left text-white text-sm hover:underline py-2 border-b border-white/20 last:border-b-0"
+                    >
+                      {r.title}
+                    </button>
+                  ))
+                )}
+              </div>
+            )}
           </nav>
         )}
       </div>

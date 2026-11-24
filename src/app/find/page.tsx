@@ -7,15 +7,15 @@ export default async function Find() {
     ...,
     "findLinks": findLinks[]{
       ...,
-      "asset": image->,
-      "hoverAsset": hoverImage->
+      "asset": image.asset->,
+      "hoverAsset": hoverImage.asset->
     }
   }`)
 
   return (
     <main className="max-w-2xl mx-auto p-6">
       <h1 className="font-['PT_Sans',sans-serif] text-[36px] leading-[44px] tracking-[0.01em] text-[#0032FF] mb-4">
-        Find
+        Find me
       </h1>
       {settings?.findText && (
         <p className="whitespace-pre-line mb-8 font-['Baskervville',serif] text-[20px] leading-[28px] text-[#0032FF]">
@@ -24,7 +24,7 @@ export default async function Find() {
       )}
       {settings?.findLinks?.length > 0 && (
         <div className="grid grid-cols-2 gap-6 mb-10">
-          {settings.findLinks.map((link: any) => (
+          {settings.findLinks.filter((link: any) => link.asset).map((link: any) => (
             <a
               key={link._key}
               href={link.url}
