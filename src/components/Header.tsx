@@ -18,7 +18,7 @@ const SENTENCES = [
   "absolute death waits for tribulation ",
   "as dares we forget truths",
   "a drunk's words felt timeless",
-  "ancient doors whisper for trespassers",
+  "ancient doors watch for trespassers",
   "aetherial dreamers walk free tonight",
   "amulet dancers wave fire-like trembling",
   "a distant wave felt thunder",
